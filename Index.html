@@ -31,6 +31,7 @@ var plane = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshBasi
 scene.add(camera);
 scene.add(marker);
 scene.add(plane);
+scene.add(video);
 
 marker.on("click", function() {
   video.play();
