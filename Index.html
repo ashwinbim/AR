@@ -1,23 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>AR Video Example</title>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    canvas { width: 100%; height: 100%; }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.3.0/aframe/build/aframe-ar.js"></script>
+<title>AR Video</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/135/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ar.js/1.5.0/ar.min.js"></script>
 </head>
 <body>
-  <a-scene embedded arjs>
-    <a-marker preset="hiro">
-      <a-entity position="0 0 0">
-        <a-video src="08.mp4" width="16" height="9" rotation="0 180 0"></a-video>
-      </a-entity>
-    </a-marker>
-    <a-entity camera></a-entity>
-  </a-scene>
+<canvas id="canvas" width="640" height="480"></canvas>
+<script>
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 1, 1100);
+camera.position.z = 500;
+
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(innerWidth, innerHeight);
+document.getElementById("canvas").appendChild(renderer.domElement);
+
+var markerImage = new Image();
+markerImage.src = "https://example.com/marker.png";
+
+var marker = new AR.aframe.Marker(markerImage, {
+  scale: 0.2,
+});
+
+var video = new THREE.Video();
+video.src = "./08.mp4";
+
+var plane = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshBasicMaterial());
+
+scene.add(camera);
+scene.add(marker);
+scene.add(plane);
+
+marker.on("click", function() {
+  video.play();
+});
+
+renderer.render(scene, camera);
+</script>
 </body>
 </html>
